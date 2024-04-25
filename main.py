@@ -3,8 +3,11 @@ from fastapi import FastAPI
 app = FastAPI()
 
 
-@app.get("/")
-async def root():
-    return {"message": "hello world"}
+# @app.get("/")
+# async def root():
+#     return {"message": "hello world"}
 
-# starting a dev server
+
+@app.get("/")
+def hello_world():
+    return "hello wod"
