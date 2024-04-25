@@ -17,12 +17,18 @@ def home():
     return {"success": True, "message": "home", "data": {}}
 
 
+@app.post("/posts")
+def create_post(post: Post):
+    print(post.dict())
+    return {"success": True, "message": "post created", "data": {}}
+
+
 @app.get("/posts")
 def get_posts():
     return {"success": True, "message": "all posts", "data": {}}
 
 
-@app.post("/posts")
-def create_post(post: Post):
-    print(post.dict())
-    return {"success": True, "message": "post created", "data": {}}
+@app.get("/posts/{id}")
+def get_post(id: int):
+    print(id)
+    return {"success": True, "message": "single post", "data": {}}
