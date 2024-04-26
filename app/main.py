@@ -36,6 +36,7 @@ def get_posts(db: Session = Depends(get_db)):
 
 
 @app.get("/posts/{id}")
-def get_post(id: int):
-    print(id)
-    return {"success": True, "message": "single post", "data": {}}
+def get_post(id: int, db: Session = Depends(get_db)):
+    post = db.query(models.Post).filter(models.Post.id == id).first()
+    print(post)
+    return {"success": True, "message": "single post", "data": post}
