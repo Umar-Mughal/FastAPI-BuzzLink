@@ -9,8 +9,6 @@ models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 
-
-
 class Post(BaseModel):
     title: str
     content: str
@@ -24,9 +22,14 @@ def home():
 
 
 @app.post("/posts")
-def create_post(post: Post):
-    print(post.dict())
-    return {"success": True, "message": "post created", "data": {}}
+def create_post(post: Post, db: Session = Depends(get_db)):
+    new_post = models.Post(
+        title=post.title, content=post.content, published=post.published
+    )
+    db.add(new_post)
+    db.commit()  # saved to db
+    db.refresh(new_post)  # get saved post to new_post variable
+    return {"success": True, "message": "post created", "data": new_post}
 
 
 @app.get("/posts")
