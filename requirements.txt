@@ -1,2 +1,3 @@
 fastapi[all]==0.110.2
 black==24.4.1
+SQLAlchemy==2.0.29
