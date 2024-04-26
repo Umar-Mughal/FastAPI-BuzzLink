@@ -1,8 +1,14 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from pydantic import BaseModel
 from typing import Optional
+from . import models
+from .database import engine, get_db
+from sqlalchemy.orm import Session
 
+models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
+
+
 
 
 class Post(BaseModel):
@@ -24,8 +30,9 @@ def create_post(post: Post):
 
 
 @app.get("/posts")
-def get_posts():
-    return {"success": True, "message": "all posts", "data": {}}
+def get_posts(db: Session = Depends(get_db)):
+    posts = db.query(models.Post).all()
+    return {"success": True, "message": "all posts", "data": posts}
 
 
 @app.get("/posts/{id}")
