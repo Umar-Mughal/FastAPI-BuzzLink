@@ -13,7 +13,6 @@ class Post(BaseModel):
     title: str
     content: str
     published: bool = True  # optional field
-    rating: Optional[int] = None
 
 
 @app.get("/")
@@ -23,9 +22,7 @@ def home():
 
 @app.post("/posts")
 def create_post(post: Post, db: Session = Depends(get_db)):
-    new_post = models.Post(
-        title=post.title, content=post.content, published=post.published
-    )
+    new_post = models.Post(**post.dict())
     db.add(new_post)
     db.commit()  # saved to db
     db.refresh(new_post)  # get saved post to new_post variable
