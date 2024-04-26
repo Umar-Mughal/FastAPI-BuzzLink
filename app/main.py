@@ -40,3 +40,33 @@ def get_post(id: int, db: Session = Depends(get_db)):
     post = db.query(models.Post).filter(models.Post.id == id).first()
     print(post)
     return {"success": True, "message": "single post", "data": post}
+
+
+@app.delete("/posts/{id}")
+def get_post(id: int, db: Session = Depends(get_db)):
+    post = db.query(models.Post).filter(models.Post.id == id)
+    if post.first() == None:
+        return {"success": True, "message": "post does not exist", "data": None}
+    post.delete()
+    db.commit()
+    return {"success": True, "message": "single post", "data": None}
+
+
+@app.put("/posts/{id}")
+def update_post(id: int, post: Post, db: Session = Depends(get_db)):
+    post_query = db.query(models.Post).filter(models.Post.id == id)
+    if post_query.first() == None:
+        return {"success": True, "message": "post does not exist", "data": None}
+    post_query.update(post.dict())
+    db.commit()
+    return {"success": True, "message": "single post", "data": post_query.first()}
+
+
+@app.delete("/posts/{id}")
+def get_post(id: int, db: Session = Depends(get_db)):
+    post = db.query(models.Post).filter(models.Post.id == id)
+    if post.first() == None:
+        return {"success": True, "message": "post does not exist", "data": None}
+    post.delete()
+    db.commit()
+    return {"success": True, "message": "single post", "data": None}
